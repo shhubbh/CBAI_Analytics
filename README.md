@@ -1,3 +1,1 @@
-# git_test
-My first github repo
-hello Odin!
+Analytics code for CBAI
