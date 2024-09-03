@@ -5,6 +5,7 @@ from Curvature import ROC
 from grade import Gradient
 import numpy as np
 import os
+from moduleCentreLine import CenterlineGenerator
 
 def lines_from_points(points):
     """Given an array of points, make a line set"""
@@ -27,6 +28,8 @@ def switch(key):
     dem = os.path.join(currentWorkingDir,f"HaulRoads_DEM.tif")
     haulRoads = os.path.join(currentWorkingDir,f"HaulRoads_SHP.shp")
     CLDirectory = os.path.join(currentWorkingDir,f"centrelines")
+    CLGen=CenterlineGenerator(haulRoads)
+    CLGen.save_centerlines(CLDirectory)
     keys={"normals":NormalPlotter(CLDirectory,dem,haulRoads),"radii":ROC(CLDirectory,dem,haulRoads),
           "grade":Gradient(CLDirectory,dem,haulRoads)}
     path=os.path.join(currentWorkingDir,f"{key}")
