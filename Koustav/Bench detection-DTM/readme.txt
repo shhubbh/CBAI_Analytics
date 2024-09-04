@@ -1,0 +1,2 @@
+change QGIS path to your local QGIS installation path.
+Requires seperate python interpreter (QGIS Python Interpreter).
