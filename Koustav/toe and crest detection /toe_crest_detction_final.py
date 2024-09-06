@@ -36,13 +36,13 @@ print("QGIS version:", Qgis.QGIS_VERSION)
 print("Processing algorithms:", len(QgsApplication.processingRegistry().algorithms()))
 
 # Check if the algorithm exists and print its parameters
-alg = QgsApplication.processingRegistry().algorithmById('native:dtmslopebasedfilter')
+alg = QgsApplication.processingRegistry().algorithmById('native:hillshade')
 if alg:
     print("Algorithm found. Parameters:")
     for param in alg.parameterDefinitions():
         print(f"- {param.name()}: {param.description()}")
 else:
-    print("Algorithm 'native:dtmslopebasedfilter' not found")
+    print("Algorithm 'native:hillshade' not found")
 
 try:
     # Create a QgsRasterLayer for input
@@ -74,7 +74,7 @@ try:
         'OUTPUT':output_ground_path
     }, feedback=feedback)
 
-    print("DTM Filter Algorithm executed. Result:", result)
+    print("Hillshade Filter Algorithm executed. Result:", result)
 
 except Exception as e:
     print("Error executing algorithm:", str(e))
@@ -141,34 +141,9 @@ gdf = gpd.GeoDataFrame(geometry=line_strings, crs=srs.ExportToProj4())
 
 # Save the contours as a shapefile
 shapefile_output_path = r"C:\Users\Copy\Desktop\files_kp\DATA\edge detection - toe+crest\DEM1\temp\edges.shp"
+geojson_output_path=r"C:\Users\Copy\Desktop\files_kp\DATA\edge detection - toe+crest\DEM1\temp\edges.geojson"
 gdf.to_file(shapefile_output_path)
+gdf.to_file(geojson_output_path)
 
-# # Create a new raster for the edge detection result
-# driver = gdal.GetDriverByName('GTiff')
-# edge_dataset = driver.Create(r"C:\Users\Copy\Desktop\files_kp\DATA\edge detection - toe+crest\DEM1\temp\edges.tif", 
-#                              dataset.RasterXSize, dataset.RasterYSize, 1, gdal.GDT_Byte)
-# edge_dataset.SetGeoTransform(geotransform)
-# edge_dataset.SetProjection(projection)
-
-# # Write the edge detection result to the new raster
-# edge_dataset.GetRasterBand(1).WriteArray((edges * 255).astype(np.uint8))
-# edge_dataset.FlushCache()
-
-# # Plot the filtered image and the Canny edge detection output
-# fig, ax = plt.subplots(1, 2, figsize=(12, 8))
-
-# # Display the Bilateral filtered image
-# ax[0].imshow(blurred, cmap='gray')
-# ax[0].set_title('Bilateral Filtered Image')
-# ax[0].axis('off')
-
-# # Display the Canny edge detection result
-# ax[1].imshow(edges, cmap='gray')
-# ax[1].set_title('Canny Edge Detection (Open Pit Mine)')
-# ax[1].axis('off')
-
-# plt.show()
-
-# Close datasets
 dataset = None
 edge_dataset = None
